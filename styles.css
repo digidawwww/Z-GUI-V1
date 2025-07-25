@@ -1,0 +1,31 @@
+.sonic-msg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 50px;
+  color: red;
+  font-weight: bold;
+  z-index: 999;
+  text-shadow: 2px 2px black;
+  animation: blink 0.3s infinite;
+}
+
+.sonic-img {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  z-index: 999;
+  image-rendering: pixelated;
+  animation: rotateGlitch 1s infinite linear;
+}
+
+@keyframes rotateGlitch {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.3); filter: hue-rotate(180deg); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+.sonic-background {
+  filter: invert(1) hue-rotate(180deg);
+}
