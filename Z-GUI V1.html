@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Z-Gui</title>
+  <style>
+    body {
+      background-color: black;
+      color: red;
+      font-family: 'Courier New', monospace;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      cursor: crosshair;
+    }
+
+    h1 {
+      font-size: 3em;
+      animation: flicker 1s infinite alternate;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .menu {
+      position: fixed;
+      top: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      padding: 20px;
+      border: 2px solid red;
+      background-color: black;
+      z-index: 999;
+      width: 320px;
+    }
+
+    .menu button {
+      background-color: black;
+      border: 2px solid red;
+      color: red;
+      padding: 10px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .menu button:hover {
+      background-color: red;
+      color: black;
+    }
+
+    .arrow-btn {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: black;
+      border: 2px solid red;
+      color: red;
+      font-family: 'Courier New', monospace;
+      padding: 10px;
+      cursor: pointer;
+      z-index: 999;
+    }
+
+    #left-arrow { left: 10px; }
+    #right-arrow { right: 10px; }
+
+    @keyframes flicker {
+      0% { opacity: 1; }
+      50% { opacity: 0.3; }
+      100% { opacity: 1; }
+    }
+
+    .floating {
+      position: absolute;
+      background-color: black;
+      border: 2px solid red;
+      color: red;
+      padding: 10px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  <h1>#Kenkoteh</h1>
+
+  <button class="arrow-btn" id="left-arrow">&lt;</button>
+  <button class="arrow-btn" id="right-arrow">&gt;</button>
+
+  <div class="menu">
+    <button onclick="ruin()">RUIN</button>
+    <button onclick="chaos()">TRUTH?</button>
+    <button onclick="nuclear()">BROKEN#1</button>
+    <button onclick="tagMode()">TAG?</button>
+    <button onclick="dataBreach()">BREACH</button>
+    <button onclick="glitch()">GLITCH</button>
+    <button onclick="sonicExe()">MUSIC1</button>
+    <button onclick="closeAll()">TERMINATE</button>
+  </div>
+
+  <script>
+    const popups = [];
+
+    function random(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function movePopup(win) {
+      let dx = 5 * (Math.random() < 0.5 ? 1 : -1);
+      let dy = 5 * (Math.random() < 0.5 ? 1 : -1);
+      let x = random(0, screen.width - 300);
+      let y = random(0, screen.height - 200);
+
+      try {
+        win.moveTo(x, y);
+      } catch (e) {}
+
+      const interval = setInterval(() => {
+        try {
+          x += dx;
+          y += dy;
+          if (x <= 0 || x >= screen.width - 300) dx *= -1;
+          if (y <= 0 || y >= screen.height - 200) dy *= -1;
+          win.moveTo(x, y);
+        } catch {
+          clearInterval(interval);
+        }
+      }, 50);
+    }
+
+    function ruin() {
+      const popup = window.open('', '', 'width=300,height=200');
+      if (popup) {
+        popup.document.body.style.background = "black";
+        popup.document.body.style.color = "red";
+        popup.document.body.style.fontFamily = "'Courier New', monospace";
+        popup.document.body.style.border = "2px solid red";
+        popup.document.title = "c00lgui";
+        popup.document.write("<h2>THE TRUTH?</h2>");
+        popup.document.body.style.background = "black";
+        popup.document.body.style.color = "red";
+        popup.document.body.style.fontFamily = "'Courier New', monospace";
+        popup.document.body.textContent = "X"
+        popups.push(popup);
+        movePopup(popup);
+      } else {
+        alert("Popup blocked! Please allow popups.");
+      }
+    }
+
+    function chaos() {
+      for (let i = 0; i < 30; i++) {
+        ruin();
+        createFloating("THE TRUTH");
+      }
+    }
+
+    function nuclear() {
+      const audio = new Audio("https://www.soundjay.com/misc/sounds/nuclear-alarm-01.mp3");
+      audio.play().catch(() => alert("Audio blocked. Click a button to enable sound."));
+      document.body.style.backgroundColor = "darkred";
+    }
+
+    function tagMode() {
+      setInterval(() => {
+        createFloating("TAG!");
+      }, 600);
+    }
+
+    function dataBreach() {
+      document.body.innerHTML = '<h1 style="color:red;text-align:center;font-size:3em;">DATA BREACH IN PROGRESS...</h1>';
+      setTimeout(ruin, 2000);
+    }
+
+    function glitch() {
+      createFloating("GL1TCH3D");
+    }
+
+    function sonicExe() {
+      const audio = new Audio("https://www.myinstants.com/media/sounds/sanic.mp3");
+      audio.play().catch(() => alert("Click to allow sound"));
+      document.body.innerHTML = '<h1 style="color:red;font-size:4em;text-align:center;">I AM GOD</h1>';
+    }
+
+    function createFloating(text) {
+      const el = document.createElement("div");
+      el.className = "floating";
+      el.innerText = text;
+      el.style.left = random(0, window.innerWidth - 150) + "px";
+      el.style.top = random(0, window.innerHeight - 50) + "px";
+      document.body.appendChild(el);
+    }
+
+    function closeAll() {
+      for (let p of popups) p.close();
+      window.location.reload();
+    }
+  </script>
+</body>
+</html>
